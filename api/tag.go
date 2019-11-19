@@ -9,7 +9,7 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
-//PostTag PostMethod
+//PostTag Function
 func (db *MongoDB) PostTag(c echo.Context) error {
 
 	tag := &model.Tag{}

@@ -21,4 +21,5 @@ func Init(e *echo.Echo) {
 
 	e.POST("/postbook", a.PostBook)
 	e.POST("/posttag", a.PostTag)
+	e.GET("/book", a.GetBook)
 }

@@ -10,5 +10,5 @@ type Book struct {
 	Author    []string        `json:"author" bson:"author"`
 	Publisher string          `json:"publisher" bson:"publisher"`
 	ImgURL    string          `json:"imgURL" bson:"imgURL"`
-	Tags      []bson.ObjectId `json:"tags" bson:"tags"`
+	Tag       []bson.ObjectId `json:"tag" bson:"tag"`
 }

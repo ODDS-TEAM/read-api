@@ -3,5 +3,6 @@
 	"title" : "Animal Farm",
 	"author" : ["George Orwell"],
 	"publisher" : "Harcourt Brace Jovanovich",
-	"imgURL": "https://covers.openlibrary.org/b/id/112473-M.jpg"
+	"imgURL": "https://covers.openlibrary.org/b/id/112473-M.jpg",
+	"tag":["5dd3b87f2b5a4168c11e6241","5dd3b8872b5a4168c11e6242","5dd3b8912b5a4168c11e6243"]
 }
