@@ -19,7 +19,11 @@ func Init(e *echo.Echo) {
 		TCol: db.TCol,
 	}
 
-	e.POST("/postbook", a.PostBook)
-	e.POST("/posttag", a.PostTag)
-	e.GET("/book", a.GetBook)
+	e.POST("/tags", a.PostTag)
+	e.GET("/tags", a.GetTag)
+	e.POST("/books", a.PostBook)
+	e.GET("/books", a.GetBook)
+
+	e.GET("/checkisbn/:isbn", a.CheckISBN)
+	e.POST("/mocktag", a.MockTag)
 }

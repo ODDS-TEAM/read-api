@@ -31,6 +31,7 @@ func (db *MongoDB) PostBook(c echo.Context) error {
 	return c.JSON(http.StatusOK, book)
 }
 
+//GetBook Function
 func (db *MongoDB) GetBook(c echo.Context) error {
 
 	books := []bson.M{}
@@ -48,4 +49,22 @@ func (db *MongoDB) GetBook(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, books)
+}
+
+func (db *MongoDB) CheckISBN(c echo.Context) error {
+
+	isbn := c.Param("isbn")
+	book := &model.Book{}
+
+	if err := c.Bind(book); err != nil {
+		fmt.Println("In CheckISBN Error ", err)
+		return err
+	}
+
+	if err := db.BCol.Find(bson.M{"isbn": isbn}).One(book); err != nil {
+		fmt.Println("======Error in CheckISBN======", err)
+		return c.String(http.StatusOK, "false")
+	}
+
+	return c.String(http.StatusOK, "true")
 }

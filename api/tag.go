@@ -20,9 +20,53 @@ func (db *MongoDB) PostTag(c echo.Context) error {
 
 	tag.TagID = bson.NewObjectId()
 	if err := db.TCol.Insert(tag); err != nil {
-		fmt.Println("In Insert Error", err)
+		fmt.Println("Error in PostTag", err)
 		return err
 	}
 
 	return c.JSON(http.StatusOK, tag)
+}
+
+//GetTag Function
+func (db *MongoDB) GetTag(c echo.Context) error {
+
+	tags := []model.Tag{}
+
+	if err := db.TCol.Find(bson.M{}).All(&tags); err != nil {
+		fmt.Println("Error in GetTag")
+		return err
+	}
+	return c.JSON(http.StatusOK, tags)
+}
+
+func (db *MongoDB) MockTag(c echo.Context) error {
+
+	tag := &model.Tag{}
+	tag.TagID = bson.NewObjectId()
+	tag.TagName = "Computer & Technology"
+	if err := db.TCol.Insert(tag); err != nil {
+		fmt.Println("Error in MockTag", err)
+		return err
+	}
+	fmt.Println(c.JSON(http.StatusOK, tag))
+
+	tag2 := &model.Tag{}
+	tag2.TagID = bson.NewObjectId()
+	tag2.TagName = "Cookbook & Food"
+	if err := db.TCol.Insert(tag2); err != nil {
+		fmt.Println("Error in MockTag2", err)
+		return err
+	}
+	fmt.Println(c.JSON(http.StatusOK, tag2))
+
+	tag3 := &model.Tag{}
+	tag3.TagID = bson.NewObjectId()
+	tag3.TagName = "Humor & Entertainment"
+	if err := db.TCol.Insert(tag3); err != nil {
+		fmt.Println("Error in MockTag3", err)
+		return err
+	}
+	fmt.Println(c.JSON(http.StatusOK, tag3))
+
+	return nil
 }
