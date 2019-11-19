@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/Maow-Nam/read-api/model"
+	"github.com/ODDS-TEAM/read-api/model"
 	"github.com/labstack/echo"
 	"gopkg.in/mgo.v2/bson"
 )
 
-//PostBook ..
+//PostTag PostMethod
 func (db *MongoDB) PostTag(c echo.Context) error {
 
 	tag := &model.Tag{}

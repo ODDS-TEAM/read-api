@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"github.com/Maow-Nam/read-api/api"
+	"github.com/ODDS-TEAM/read-api/api"
 	"github.com/labstack/echo"
 )
 

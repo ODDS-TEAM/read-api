@@ -5,8 +5,8 @@ import (
 
 	"net/http"
 
-	"github.com/Maow-Nam/read-api/config"
-	"github.com/Maow-Nam/read-api/routes"
+	"github.com/ODDS-TEAM/read-api/config"
+	"github.com/ODDS-TEAM/read-api/routes"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 	"github.com/labstack/gommon/log"

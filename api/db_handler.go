@@ -3,7 +3,7 @@ package api
 import (
 	"fmt"
 
-	"github.com/Maow-Nam/read-api/config"
+	"github.com/ODDS-TEAM/read-api/config"
 	"gopkg.in/mgo.v2"
 )
 
