@@ -51,6 +51,7 @@ func (db *MongoDB) GetBook(c echo.Context) error {
 	return c.JSON(http.StatusOK, books)
 }
 
+// CheckISBN function
 func (db *MongoDB) CheckISBN(c echo.Context) error {
 
 	isbn := c.Param("isbn")
