@@ -7,7 +7,7 @@ import (
 
 // Init initialize api routes and set up a connection.
 func Init(e *echo.Echo) {
-
+	api := "/api"
 	// Database connection.
 	db, err := controller.NewMongoDB()
 	if err != nil {
@@ -20,13 +20,11 @@ func Init(e *echo.Echo) {
 		TCol: db.TCol,
 	}
 
-	url := "/api"
+	e.POST(api+"/tags", a.PostTag)
+	e.GET(api+"/tags", a.GetTag)
+	e.POST(api+"/books", a.PostBook)
+	e.GET(api+"/books", a.GetBook)
 
-	e.POST(url+"/tags", a.PostTag)
-	e.GET(url+"/tags", a.GetTag)
-	e.POST(url+"/books", a.PostBook)
-	e.GET(url+"/books", a.GetBook)
-
-	e.GET(url+"/checkisbn/:isbn", a.CheckISBN)
-	e.POST(url+"/mocktag", a.MockTag)
+	e.GET(api+"/checkisbn/:isbn", a.CheckISBN)
+	e.POST(api+"/mocktag", a.MockTag)
 }

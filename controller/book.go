@@ -13,7 +13,6 @@ import (
 //PostBook Function
 func (db *MongoDB) PostBook(c echo.Context) error {
 
-	//recive data from POST
 	book := &model.Book{}
 	if err := c.Bind(book); err != nil {
 		fmt.Println("In c.Bind Error ", err)
@@ -30,8 +29,6 @@ func (db *MongoDB) PostBook(c echo.Context) error {
 		return err
 	}
 
-	fmt.Println("===============", book.Tags)
-	//create ObjectID book
 	book.BookID = bson.NewObjectId()
 
 	if err := db.BCol.Insert(book); err != nil {
@@ -55,7 +52,7 @@ func (db *MongoDB) GetBook(c echo.Context) error {
 	}
 
 	if err := db.BCol.Pipe(pipeline).All(&books); err != nil {
-		fmt.Println("======Error in GetBook======")
+		fmt.Println("Error in GetBook", err)
 		return err
 	}
 
@@ -74,7 +71,7 @@ func (db *MongoDB) CheckISBN(c echo.Context) error {
 	}
 
 	if err := db.BCol.Find(bson.M{"isbn": isbn}).One(book); err != nil {
-		fmt.Println("======Error in CheckISBN======", err)
+		fmt.Println("Error in CheckISBN", err)
 		return c.String(http.StatusOK, "false")
 	}
 

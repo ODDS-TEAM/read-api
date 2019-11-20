@@ -60,7 +60,6 @@ func (db *MongoDB) MockTag(c echo.Context) error {
 		fmt.Println("Error in MockTag", err)
 		return err
 	}
-	fmt.Println(c.JSON(http.StatusOK, tag))
 
 	tag2 := &model.Tag{}
 	tag2.TagID = bson.NewObjectId()
@@ -69,7 +68,6 @@ func (db *MongoDB) MockTag(c echo.Context) error {
 		fmt.Println("Error in MockTag2", err)
 		return err
 	}
-	fmt.Println(c.JSON(http.StatusOK, tag2))
 
 	tag3 := &model.Tag{}
 	tag3.TagID = bson.NewObjectId()
@@ -78,7 +76,5 @@ func (db *MongoDB) MockTag(c echo.Context) error {
 		fmt.Println("Error in MockTag3", err)
 		return err
 	}
-	fmt.Println(c.JSON(http.StatusOK, tag3))
-
 	return nil
 }
