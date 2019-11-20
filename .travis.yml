@@ -1,6 +1,6 @@
-language: go
-go:
-- '1.12'
+language: ruby
+services:
+- docker
 before_install:
 - openssl enc -aes-256-cbc -d -in deploy_api_rsa.enc -out deploy_rsa -k $DECRYPT_PASS
 - eval "$(ssh-agent -s)"
