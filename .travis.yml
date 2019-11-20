@@ -2,7 +2,7 @@ language: go
 go:
 - '1.12'
 before_install:
-- openssl aes-256-cbc -K deployapi -in deploy_api.rsa.enc -out deploy_rsa -d
+- openssl enc -aes-256-cbc -d -in deploy_api_rsa.enc -out deploy_rsa -k $DECRYPT_PASS
 - eval "$(ssh-agent -s)"
 - chmod 600 deploy_rsa
 - ssh-add deploy_rsa
@@ -11,4 +11,4 @@ before_install:
 - docker push oddsread/read-api
 
 install: 
-- ssh -i ./deploy_rsa -oStrictHostKeyChecking=no -t nc-user@mac.odds.team "cd readodds && docker-compose pull && docker-compose up -d"
+- ssh -i ./deploy_rsa -oStrictHostKeyChecking=no -t $HOST_SERVER "cd readodds && docker-compose pull && docker-compose up -d"
