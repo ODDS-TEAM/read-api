@@ -25,6 +25,8 @@ func Init(e *echo.Echo) {
 	api.POST("/books", a.PostBook)
 	api.GET("/books", a.GetBook)
 
+	api.POST("/upload", a.UploadImgs)
+
 	api.GET("/checkisbn/:isbn", a.CheckISBN)
 	api.POST("/mocktag", a.MockTag)
 }
