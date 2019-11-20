@@ -19,7 +19,7 @@ func (db *MongoDB) PostBook(c echo.Context) error {
 		return err
 	}
 
-	fmt.Println("===============", book.Tag)
+	fmt.Println("===============", book.Tags)
 	//create ObjectID book
 	book.BookID = bson.NewObjectId()
 
@@ -38,9 +38,9 @@ func (db *MongoDB) GetBook(c echo.Context) error {
 
 	pipeline := []bson.M{
 		bson.M{"$lookup": bson.M{"from": "Tag",
-			"localField":   "tag",
+			"localField":   "tags",
 			"foreignField": "_id",
-			"as":           "tag"}},
+			"as":           "tags"}},
 	}
 
 	if err := db.BCol.Pipe(pipeline).All(&books); err != nil {
