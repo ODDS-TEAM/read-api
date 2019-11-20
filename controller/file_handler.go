@@ -10,7 +10,7 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
-//Upload ddd
+//UploadImgs function
 func (db *MongoDB) UploadImgs(c echo.Context) error {
 	books := &model.Book{
 		BookID: bson.NewObjectId(),
