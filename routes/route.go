@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"github.com/ODDS-TEAM/read-api/api"
+	api "github.com/ODDS-TEAM/read-api/controller"
 	"github.com/labstack/echo"
 )
 
