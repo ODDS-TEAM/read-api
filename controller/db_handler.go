@@ -16,7 +16,7 @@ type (
 	}
 )
 
-// NewMongoDB creates a new macOddsTeamDB backed by a given Mongo server.
+// NewMongoDB creates a new readDB backed by a given Mongo server.
 func NewMongoDB() (*MongoDB, error) {
 	s := config.Spec()
 	conn, err := mgo.Dial(s.DBHost)
