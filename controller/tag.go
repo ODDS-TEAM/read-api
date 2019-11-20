@@ -1,4 +1,4 @@
-package api
+package controller
 
 import (
 	"fmt"
@@ -6,6 +6,7 @@ import (
 
 	"github.com/ODDS-TEAM/read-api/model"
 	"github.com/labstack/echo"
+	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
 
@@ -18,10 +19,21 @@ func (db *MongoDB) PostTag(c echo.Context) error {
 		return err
 	}
 
+	// make tagName unique field
+	index := mgo.Index{
+		Key:    []string{"tagName"},
+		Unique: true,
+	}
+	err := db.TCol.EnsureIndex(index)
+	if err != nil {
+		return err
+	}
+
 	tag.TagID = bson.NewObjectId()
 	if err := db.TCol.Insert(tag); err != nil {
+
 		fmt.Println("Error in PostTag", err)
-		return err
+		return c.JSON(http.StatusUnprocessableEntity, err)
 	}
 
 	return c.JSON(http.StatusOK, tag)

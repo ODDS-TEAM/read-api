@@ -1,4 +1,4 @@
-package api
+package controller
 
 import (
 	"fmt"
@@ -6,6 +6,7 @@ import (
 
 	"github.com/ODDS-TEAM/read-api/model"
 	"github.com/labstack/echo"
+	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
 
@@ -16,6 +17,16 @@ func (db *MongoDB) PostBook(c echo.Context) error {
 	book := &model.Book{}
 	if err := c.Bind(book); err != nil {
 		fmt.Println("In c.Bind Error ", err)
+		return c.JSON(http.StatusBadRequest, err)
+	}
+
+	// make ISBN unique field
+	index := mgo.Index{
+		Key:    []string{"isbn"},
+		Unique: true,
+	}
+	err := db.BCol.EnsureIndex(index)
+	if err != nil {
 		return err
 	}
 
@@ -25,7 +36,7 @@ func (db *MongoDB) PostBook(c echo.Context) error {
 
 	if err := db.BCol.Insert(book); err != nil {
 		fmt.Println("In Insert Error", err)
-		return err
+		return c.JSON(http.StatusConflict, err)
 	}
 
 	return c.JSON(http.StatusOK, book)

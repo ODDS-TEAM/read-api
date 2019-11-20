@@ -1,4 +1,4 @@
-package api
+package controller
 
 import (
 	"fmt"
@@ -20,7 +20,6 @@ type (
 func NewMongoDB() (*MongoDB, error) {
 	s := config.Spec()
 	conn, err := mgo.Dial(s.DBHost)
-
 	if err != nil {
 		return nil, fmt.Errorf("mongo: could not dial: %v", err)
 	}

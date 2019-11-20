@@ -1,7 +1,7 @@
 package routes
 
 import (
-	api "github.com/ODDS-TEAM/read-api/controller"
+	controller "github.com/ODDS-TEAM/read-api/controller"
 	"github.com/labstack/echo"
 )
 
@@ -9,24 +9,24 @@ import (
 func Init(e *echo.Echo) {
 
 	// Database connection.
-	db, err := api.NewMongoDB()
+	db, err := controller.NewMongoDB()
 	if err != nil {
 		e.Logger.Fatal(err)
 	}
 
-	a := &api.MongoDB{
+	a := &controller.MongoDB{
 		Conn: db.Conn,
 		BCol: db.BCol,
 		TCol: db.TCol,
 	}
 
-	api := "/api"
+	url := "/api"
 
-	e.POST(api+"/tags", a.PostTag)
-	e.GET(api+"/tags", a.GetTag)
-	e.POST(api+"/books", a.PostBook)
-	e.GET(api+"/books", a.GetBook)
+	e.POST(url+"/tags", a.PostTag)
+	e.GET(url+"/tags", a.GetTag)
+	e.POST(url+"/books", a.PostBook)
+	e.GET(url+"/books", a.GetBook)
 
-	e.GET(api+"/checkisbn/:isbn", a.CheckISBN)
-	e.POST(api+"/mocktag", a.MockTag)
+	e.GET(url+"/checkisbn/:isbn", a.CheckISBN)
+	e.POST(url+"/mocktag", a.MockTag)
 }
