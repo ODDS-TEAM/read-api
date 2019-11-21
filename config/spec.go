@@ -27,6 +27,7 @@ func Spec() *Specification {
 		DBName:    os.Getenv("DB_NAME"),
 		DBBookCol: os.Getenv("DB_BOOK_COL"),
 		DBTagCol:  os.Getenv("DB_TAG_COL"),
+		ImgPath:   os.Getenv("IMG_PATH"),
 		APIPort:   os.Getenv("API_PORT"),
 	}
 	return &s

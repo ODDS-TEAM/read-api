@@ -6,6 +6,7 @@ import (
 	"os"
 	"path"
 
+	"github.com/ODDS-TEAM/read-api/config"
 	"github.com/ODDS-TEAM/read-api/model"
 	"github.com/gofrs/uuid"
 	"github.com/labstack/echo"
@@ -36,8 +37,9 @@ func UploadImgs(c echo.Context) (*model.Book, bool, error) {
 	}
 	defer src.Close()
 
+	spec := config.Spec()
 	uniqueFileName := uuid.Must(uuid.NewV4()).String() + path.Ext(file.Filename)
-	filePath := "/app/asset/images/" + uniqueFileName
+	filePath := spec.ImgPath + uniqueFileName
 
 	//destination
 	dst, err := os.Create(filePath)
