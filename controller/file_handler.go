@@ -37,7 +37,7 @@ func UploadImgs(c echo.Context) (*model.Book, bool, error) {
 	defer src.Close()
 
 	uniqueFileName := uuid.Must(uuid.NewV4()).String() + path.Ext(file.Filename)
-	filePath := "./asset/images/" + uniqueFileName
+	filePath := "/app/asset/images/" + uniqueFileName
 
 	//destination
 	dst, err := os.Create(filePath)
