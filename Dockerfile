@@ -1,4 +1,4 @@
-FROM golang:1.12.5 as build
+FROM golang:1.12.13 as build
 WORKDIR /build
 COPY go.mod /build
 COPY go.sum /build
