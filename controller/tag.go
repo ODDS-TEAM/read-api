@@ -53,6 +53,7 @@ func (db *MongoDB) GetTag(c echo.Context) error {
 	return c.JSON(http.StatusOK, tags)
 }
 
+//MockTag function
 func (db *MongoDB) MockTag(c echo.Context) error {
 
 	tag := &model.Tag{}
