@@ -1,44 +1,53 @@
 package controller
 
 import (
+	"fmt"
 	"io"
-	"net/http"
 	"os"
 
 	"github.com/ODDS-TEAM/read-api/model"
 	"github.com/labstack/echo"
-	"gopkg.in/mgo.v2/bson"
 )
 
 //UploadImgs function
-func (db *MongoDB) UploadImgs(c echo.Context) error {
-	books := &model.Book{
-		BookID: bson.NewObjectId(),
-	}
+func UploadImgs(c echo.Context) (*model.Book, bool, error) {
+	books := &model.Book{}
 
+	c.Bind(books)
+
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Print(r)
+		}
+	}()
+
+	//read file
 	file, err := c.FormFile("image")
 	if err != nil {
-		return err
+		return books, false, nil
 	}
 
+	//source
 	src, err := file.Open()
 	if err != nil {
-		return err
+		return books, false, nil
 	}
 	defer src.Close()
 
+	//destination
 	dst, err := os.Create(file.Filename)
 	if err != nil {
-		return err
+		return books, false, nil
 	}
 
 	defer dst.Close()
 
-	//Copy
+	//copy
 	if _, err = io.Copy(dst, src); err != nil {
-		return err
+		return books, false, nil
 	}
+
 	books.ImgURL = file.Filename
 
-	return c.JSON(http.StatusOK, books)
+	return books, true, nil
 }

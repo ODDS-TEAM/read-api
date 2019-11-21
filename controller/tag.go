@@ -13,7 +13,10 @@ import (
 //PostTag Function
 func (db *MongoDB) PostTag(c echo.Context) error {
 
-	tag := &model.Tag{}
+	tag := &model.Tag{
+		TagID: bson.NewObjectId(),
+	}
+
 	if err := c.Bind(tag); err != nil {
 		fmt.Println("In c.Bind Error ", err)
 		return err
@@ -29,7 +32,6 @@ func (db *MongoDB) PostTag(c echo.Context) error {
 		return err
 	}
 
-	tag.TagID = bson.NewObjectId()
 	if err := db.TCol.Insert(tag); err != nil {
 
 		fmt.Println("Error in PostTag", err)

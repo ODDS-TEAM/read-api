@@ -13,8 +13,10 @@ import (
 //PostBook Function
 func (db *MongoDB) PostBook(c echo.Context) error {
 
-	book := &model.Book{}
-	if err := c.Bind(book); err != nil {
+	books := &model.Book{
+		BookID: bson.NewObjectId(),
+	}
+	if err := c.Bind(books); err != nil {
 		fmt.Println("In c.Bind Error ", err)
 		return c.JSON(http.StatusBadRequest, err)
 	}
@@ -29,14 +31,18 @@ func (db *MongoDB) PostBook(c echo.Context) error {
 		return err
 	}
 
-	book.BookID = bson.NewObjectId()
+	bookUpload, isUpload, _ := UploadImgs(c)
 
-	if err := db.BCol.Insert(book); err != nil {
+	if isUpload == true {
+		books.ImgURL = bookUpload.ImgURL
+	}
+
+	if err := db.BCol.Insert(books); err != nil {
 		fmt.Println("In Insert Error", err)
 		return c.JSON(http.StatusConflict, err)
 	}
 
-	return c.JSON(http.StatusOK, book)
+	return c.JSON(http.StatusOK, books)
 }
 
 //GetBook Function
