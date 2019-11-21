@@ -44,7 +44,7 @@ func (db *MongoDB) PostTag(c echo.Context) error {
 //GetTag Function
 func (db *MongoDB) GetTag(c echo.Context) error {
 
-	tags := []model.Tag{}
+	tags := &[]model.Tag{}
 
 	if err := db.TCol.Find(bson.M{}).All(&tags); err != nil {
 		fmt.Println("Error in GetTag")

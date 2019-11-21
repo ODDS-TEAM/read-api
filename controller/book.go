@@ -13,7 +13,9 @@ import (
 //PostBook Function
 func (db *MongoDB) PostBook(c echo.Context) error {
 
-	books := &model.Book{}
+	books := &model.Book{
+		BookID: bson.NewObjectId(),
+	}
 	if err := c.Bind(books); err != nil {
 		fmt.Println("In c.Bind Error ", err)
 		return c.JSON(http.StatusBadRequest, err)
