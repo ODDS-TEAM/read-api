@@ -6,63 +6,70 @@ import (
 
 	"github.com/ODDS-TEAM/read-api/model"
 	"github.com/labstack/echo"
-	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
 
 //PostBook Function
 func (db *MongoDB) PostBook(c echo.Context) error {
+	var temptrue []string
+	var tempfalse []string
 
-	books := &model.Book{
-		BookID: bson.NewObjectId(),
-	}
+	books := &model.Book{}
 	if err := c.Bind(books); err != nil {
-		fmt.Println("In c.Bind Error ", err)
 		return c.JSON(http.StatusBadRequest, err)
 	}
 
-	// make ISBN unique field
-	index := mgo.Index{
-		Key:    []string{"isbn"},
-		Unique: true,
-	}
-	err := db.BCol.EnsureIndex(index)
-	if err != nil {
-		return err
+	for i := range books.Tags {
+		fmt.Println(books.Tags[i])
+		result := &model.Tag{}
+		err := db.TCol.Find(bson.M{"tagName": books.Tags[i]}).One(&result)
+		if err != nil {
+			result = db.CreateTag(books.Tags[i])
+			tempfalse = append(tempfalse, result.TagName)
+		} else {
+			temptrue = append(temptrue, books.Tags[i])
+		}
 	}
 
+	temptrue = append(temptrue, tempfalse...)
+	fmt.Println(temptrue)
+	books.BookID = bson.NewObjectId()
+	books.Tags = temptrue
 	bookUpload, isUpload, _ := UploadImgs(c)
 
 	if isUpload == true {
 		books.ImgURL = bookUpload.ImgURL
 	}
 
-	fmt.Print(books.Tags)
 	if err := db.BCol.Insert(books); err != nil {
 		fmt.Println("In Insert Error", err)
 		return c.JSON(http.StatusConflict, err)
 	}
 
-	return c.JSON(http.StatusOK, books)
+	return c.JSON(http.StatusCreated, books)
 }
 
 //GetBook Function
 func (db *MongoDB) GetBook(c echo.Context) error {
 
-	books := []bson.M{}
+	books := []model.Book{}
 
-	pipeline := []bson.M{
-		bson.M{"$lookup": bson.M{"from": "Tag",
-			"localField":   "tags",
-			"foreignField": "_id",
-			"as":           "tags_out"}},
-	}
+	// pipeline := []bson.M{
+	// 	bson.M{"$lookup": bson.M{"from": "Tag",
+	// 		"localField":   "tags",
+	// 		"foreignField": "_id",
+	// 		"as":           "tags_out"}},
+	// }
 
-	if err := db.BCol.Pipe(pipeline).All(&books); err != nil {
+	// if err := db.BCol.Pipe(pipeline).All(&books); err != nil {
+	// 	fmt.Println("Error in GetBook", err)
+	// 	return err
+	// }
+
+	if err := db.BCol.Find(bson.M{}).All(&books); err != nil {
 		fmt.Println("Error in GetBook", err)
 		return err
 	}
-
 	return c.JSON(http.StatusOK, books)
 }
 
@@ -83,4 +90,18 @@ func (db *MongoDB) CheckISBN(c echo.Context) error {
 	}
 
 	return c.String(http.StatusOK, "true")
+}
+
+//CreateTag ...
+func (db *MongoDB) CreateTag(tag string) *model.Tag {
+	tags := &model.Tag{
+		TagID:   bson.NewObjectId(),
+		TagName: tag,
+	}
+	if err := db.TCol.Insert(tags); err != nil {
+		fmt.Println("Error in CreateTag", err)
+		return tags
+	}
+	fmt.Println(tags)
+	return tags
 }
