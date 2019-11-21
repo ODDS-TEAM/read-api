@@ -4,8 +4,10 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"path"
 
 	"github.com/ODDS-TEAM/read-api/model"
+	"github.com/gofrs/uuid"
 	"github.com/labstack/echo"
 )
 
@@ -33,7 +35,9 @@ func UploadImgs(c echo.Context) (*model.Book, bool, error) {
 		return books, false, nil
 	}
 	defer src.Close()
-	filePath := "./assets/img/" + file.Filename
+
+	uniqueFileName := uuid.Must(uuid.NewV4()).String() + path.Ext(file.Filename)
+	filePath := "./asset/images/" + uniqueFileName
 
 	//destination
 	dst, err := os.Create(filePath)
@@ -48,6 +52,6 @@ func UploadImgs(c echo.Context) (*model.Book, bool, error) {
 		return books, false, nil
 	}
 
-	books.ImgURL = file.Filename
+	books.ImgURL = uniqueFileName
 	return books, true, nil
 }
