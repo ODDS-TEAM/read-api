@@ -3,6 +3,7 @@ package controller
 import (
 	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/ODDS-TEAM/read-api/model"
 	"github.com/labstack/echo"
@@ -20,19 +21,18 @@ func (db *MongoDB) PostBook(c echo.Context) error {
 	}
 
 	for i := range books.Tags {
-		fmt.Println(books.Tags[i])
+		lowerTags := strings.ToLower(books.Tags[i])
 		result := &model.Tag{}
-		err := db.TCol.Find(bson.M{"tagName": books.Tags[i]}).One(&result)
+		err := db.TCol.Find(bson.M{"tagName": lowerTags}).One(&result)
 		if err != nil {
-			result = db.CreateTag(books.Tags[i])
+			result = db.CreateTag(lowerTags)
 			tempfalse = append(tempfalse, result.TagName)
 		} else {
-			temptrue = append(temptrue, books.Tags[i])
+			temptrue = append(temptrue, lowerTags)
 		}
 	}
 
 	temptrue = append(temptrue, tempfalse...)
-	fmt.Println(temptrue)
 	books.BookID = bson.NewObjectId()
 	books.Tags = temptrue
 	bookUpload, isUpload, _ := UploadImgs(c)
@@ -102,6 +102,5 @@ func (db *MongoDB) CreateTag(tag string) *model.Tag {
 		fmt.Println("Error in CreateTag", err)
 		return tags
 	}
-	fmt.Println(tags)
 	return tags
 }
