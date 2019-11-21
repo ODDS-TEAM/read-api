@@ -37,7 +37,7 @@ func (db *MongoDB) PostBook(c echo.Context) error {
 		books.ImgURL = bookUpload.ImgURL
 	}
 
-	fmt.Print(books)
+	fmt.Print(books.Tags)
 	if err := db.BCol.Insert(books); err != nil {
 		fmt.Println("In Insert Error", err)
 		return c.JSON(http.StatusConflict, err)
@@ -55,7 +55,7 @@ func (db *MongoDB) GetBook(c echo.Context) error {
 		bson.M{"$lookup": bson.M{"from": "Tag",
 			"localField":   "tags",
 			"foreignField": "_id",
-			"as":           "tags"}},
+			"as":           "tags_out"}},
 	}
 
 	if err := db.BCol.Pipe(pipeline).All(&books); err != nil {
