@@ -8,7 +8,7 @@ type Book struct {
 	Isbn       string           `json:"isbn" bson:"isbn"`
 	Title      string           `json:"title" bson:"title"`
 	Authors    []string         `json:"authors" bson:"authors"`
-	Publishers string           `json:"publishers" bson:"publishers"`
+	Publishers []string         `json:"publishers" bson:"publishers"`
 	ImgURL     string           `json:"imgURL" bson:"imgURL"`
 	Tags       []*bson.ObjectId `json:"tags" bson:"tags"`
 }
