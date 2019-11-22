@@ -75,21 +75,22 @@ func (db *MongoDB) GetBook(c echo.Context) error {
 
 // CheckISBN function
 func (db *MongoDB) CheckISBN(c echo.Context) error {
-
+	msg := &model.Message{}
 	isbn := c.Param("isbn")
-	book := &model.Book{}
+	books := &model.Book{}
 
-	if err := c.Bind(book); err != nil {
+	if err := c.Bind(books); err != nil {
 		fmt.Println("In CheckISBN Error ", err)
-		return err
+		return c.JSON(http.StatusBadRequest, err)
 	}
 
-	if err := db.BCol.Find(bson.M{"isbn": isbn}).One(book); err != nil {
+	if err := db.BCol.Find(bson.M{"isbn": isbn}).One(books); err != nil {
 		fmt.Println("Error in CheckISBN", err)
-		return c.String(http.StatusOK, "false")
+		msg.Msg = "not found"
+		return c.JSON(http.StatusOK, msg)
 	}
 
-	return c.String(http.StatusOK, "true")
+	return c.JSON(http.StatusOK, books)
 }
 
 //CreateTag ...
