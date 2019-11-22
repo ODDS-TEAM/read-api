@@ -17,8 +17,7 @@ type (
 )
 
 // NewMongoDB creates a new readDB backed by a given Mongo server.
-func NewMongoDB() (*MongoDB, error) {
-	s := config.Spec()
+func NewMongoDB(s *config.Specification) (*MongoDB, error) {
 	conn, err := mgo.Dial(s.DBHost)
 	if err != nil {
 		return nil, fmt.Errorf("mongo: could not dial: %v", err)

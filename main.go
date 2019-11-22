@@ -27,6 +27,6 @@ func main() {
 		return c.String(http.StatusOK, "OddsRead OK!")
 	})
 
-	routes.Init(e)
+	routes.Init(e, s)
 	e.Logger.Fatal(e.Start(s.APIPort))
 }

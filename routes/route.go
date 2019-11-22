@@ -1,14 +1,15 @@
 package routes
 
 import (
+	"github.com/ODDS-TEAM/read-api/config"
 	controller "github.com/ODDS-TEAM/read-api/controller"
 	"github.com/labstack/echo"
 )
 
 // Init initialize api routes and set up a connection.
-func Init(e *echo.Echo) {
+func Init(e *echo.Echo, s *config.Specification) {
 	// Database connection.
-	db, err := controller.NewMongoDB()
+	db, err := controller.NewMongoDB(s)
 	if err != nil {
 		e.Logger.Fatal(err)
 	}
